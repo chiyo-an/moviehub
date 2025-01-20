@@ -9,7 +9,7 @@ const MovieCard = (props) => {
   const { id, title, poster_path, vote_average } = props;
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(`/movie/${id}`);
+    navigate(`/movie/${id}`); // 각 리스트의 디테일id값으로 이동
   }
   return (
     <div onClick={handleClick} className="w-[200px]">

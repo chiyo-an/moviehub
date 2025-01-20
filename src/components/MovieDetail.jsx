@@ -14,7 +14,9 @@ const MovieDetail = () => {
   useEffect(() => {
     const fetchMovieDetail = async () => {
       const movieData = await getMovieDetail(id); // id로 해당 영화의 상세 정보만 가져오기
-      setMovieDetail(movieData);
+      if (!movieData.adult) {  // 성인 필터링
+        setMovieDetail(movieData);
+      }
     };
 
     fetchMovieDetail();
@@ -36,7 +38,9 @@ const MovieDetail = () => {
 
           <div className="p-[20px]">
             {movieDetail?.genres?.map(genre => (
-              <span className="inline-block rounded-[30px] pl-[10px] pr-[10px] mr-[10px] text-white bg-violet-500" key={genre.id}>{genre.name}</span>
+              <span className="inline-block rounded-[30px] pl-[10px] pr-[10px] mr-[10px] text-white bg-violet-500" key={genre.id}>
+                {genre.name}
+              </span>
             ))}
           </div>
           <div className="p-[20px]">
