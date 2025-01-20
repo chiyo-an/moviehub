@@ -1,6 +1,6 @@
 // API 주소, KEY값
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = "d3f60f40159f94534d29572c28018508";
+const API_KEY = import.meta.env.VITE_APP_TMDB_API_KEY; // 환경변수 사용
 
 // 인기영화 호출
 export const getPopularMovies = async () => { 

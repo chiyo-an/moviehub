@@ -30,7 +30,7 @@ const App = () => {
           <div className="w-full max-w-[1600px]">
             <h1 className="text-[30px] font-semibold">인기 영화</h1>
             <div className="flex flex-wrap justify-start gap-[33px]">
-              {movies.map((movie) => ( // map을 이용하여 movies 배열의 각 영화 데이터를 MovieCard 컴포넌트로 변환
+              {movies.map((movie) => ( // movies 배열의 각 영화 데이터를 MovieCard 컴포넌트로 변환
                 // MovieCard에 props로 전달
                 <MovieCard
                   key={movie.id}
