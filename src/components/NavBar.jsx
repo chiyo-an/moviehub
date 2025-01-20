@@ -19,7 +19,7 @@ const NavBar = () => {
           </button>
           <button className="w-[80px] h-[36px] bg-violet-500 rounded-[8px]">
             회원가입
-          </button>
+          </button> 
         </div>
       </div>
     </nav>

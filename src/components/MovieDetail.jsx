@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react'
+import { getMovieDetail, getPopularMovies } from '../api/tmdb';
 
-const IMG_BASIC_URL = 'https://image.tmdb.org/t/p/w500'
+import { useParams } from 'react-router-dom';
+
+const IMG_BASE_URL = 'https://image.tmdb.org/t/p/w500'
+
 
 const MovieDetail = () => {
   // 영화 디테일 데이터를 저장할 상태와 상태 갱신함수를 선언, 상태 초기값은 null
   const [movieDetail, setMovieDetail] = useState(null);
+  const { id } = useParams(); // URL에서 영화 id 가져오기
 
   useEffect(() => {
-    // async, await로 비동기 처리
     const fetchMovieDetail = async () => {
-      const response = await fetch('/src/assets/data/movieDetailData.json');
-      const data = await response.json();
-      setMovieDetail(data);
+      const movieData = await getMovieDetail(id); // id로 해당 영화의 상세 정보만 가져오기
+      setMovieDetail(movieData);
     };
 
     fetchMovieDetail();
-  }, []);
+  }, [id]); // id가 바뀔때마다 실행
 
   return (
     <div className="max-w-[1200px] mx-auto p-[24px]">
       <div className="flex gap-[24px]">
-        <div className="w-[500px] h-[750px]">
+        <div className="w-[500px] h-[700px]">
           <img 
-            src={`${IMG_BASIC_URL}${movieDetail?.poster_path}`} 
+            src={`${IMG_BASE_URL}${movieDetail?.poster_path}`} 
             alt={movieDetail?.title} 
             className="w-full h-full object-cover rounded-[8px]"
           />

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout'
 import MovieCard from './components/MovieCard'
+import MovieDetail from './components/MovieDetail'
+import { getPopularMovies } from './api/tmdb';
 
 const App = () => {
   
@@ -11,32 +14,38 @@ const App = () => {
   // async, await로 비동기 처리
   useEffect(() => {
     const fetchMovies = async () => {
-      const response = await fetch('/src/assets/data/movieListData.json'); // 로컬 JSON 파일에서 데이터 fetch
-      const data = await response.json(); // 받아온 JSON파일을 바로 사용할 수 있도록 javascript 객체로 변환
-      setMovies(data.results);
+      const movieData = await getPopularMovies();
+      setMovies(movieData);
     }
 
     fetchMovies();
-  }, []); // 컴포넌트 마운트 시 1번만 실행
+  }, []);
+  
 
   
   return (
-    <div className="flex justify-center">
-      <div className="w-full max-w-[1600px]">
-        <h1 className="text-[30px] font-extrabold">영화 전체 보기</h1>
-        <div className="flex flex-wrap justify-start gap-[33px]">
-        {movies.map((movie) => ( // map을 이용하여 movies 배열의 각 영화 데이터를 MovieCard 컴포넌트로 변환
-          // MovieCard에 props로 전달
-          <MovieCard
-            key={movie.id}
-            title={movie.title} // 제목
-            posterPath={movie.poster_path} // 이미지 경로
-            voteAverage={movie.vote_average} // 평점
-          />
-        ))}
+    <Routes>
+      <Route path="/" element={
+        <div className="flex justify-center">
+          <div className="w-full max-w-[1600px]">
+            <h1 className="text-[30px] font-semibold">인기 영화</h1>
+            <div className="flex flex-wrap justify-start gap-[33px]">
+              {movies.map((movie) => ( // map을 이용하여 movies 배열의 각 영화 데이터를 MovieCard 컴포넌트로 변환
+                // MovieCard에 props로 전달
+                <MovieCard
+                  key={movie.id}
+                  id={movie.id}
+                  title={movie.title}
+                  poster_path={movie.poster_path}
+                  vote_average={movie.vote_average}
+                />
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      } />
+      <Route path="/movie/:id" element={<MovieDetail />} />
+    </Routes>
   );
 }
 
