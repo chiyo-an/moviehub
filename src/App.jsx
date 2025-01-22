@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { Route, Routes } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 
-import Layout from './components/Layout'
-import MovieCard from './components/MovieCard'
-import MovieDetail from './components/MovieDetail'
+import MovieCard from './components/MovieCard';
 import { getPopularMovies } from './api/tmdb';
+import { useOutletContext } from 'react-router-dom';
 
 const App = () => {
-  
-  // 영화 데이터를 저장할 상태와 상태 갱신 함수 선언. 초기값은 빈 배열
+  // 인기 영화 목록 저장할 상태와 상태 갱신 함수 선언, 상태 초기값 빈배열
   const [movies, setMovies] = useState([]);
-  
-  // async, await로 비동기 처리
-  useEffect(() => {
+  const [searchResults] = useOutletContext() || []; // undefined일 경우 대비 기본값 []
+
+  useEffect(() => { 
     const fetchMovies = async () => {
       const movieData = await getPopularMovies();
       setMovies(movieData);
@@ -20,33 +17,30 @@ const App = () => {
 
     fetchMovies();
   }, []);
-  
 
-  
+  // searchResults가 있으면 그것을 사용하고, 없으면 인기영화 목록 사용
+  const moviesToDisplay = searchResults || movies;
+
   return (
-    <Routes>
-      <Route path="/" element={
-        <div className="flex justify-center">
-          <div className="w-full max-w-[1600px]">
-            <h1 className="text-[30px] font-semibold">인기 영화</h1>
-            <div className="flex flex-wrap justify-start gap-[33px]">
-              {movies.map((movie) => ( // movies 배열의 각 영화 데이터를 MovieCard 컴포넌트로 변환
-                // MovieCard에 props로 전달
-                <MovieCard
-                  key={movie.id}
-                  id={movie.id}
-                  title={movie.title}
-                  poster_path={movie.poster_path}
-                  vote_average={movie.vote_average}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      } />
-      <Route path="/movie/:id" element={<MovieDetail />} />
-    </Routes>
+    <div className="flex justify-center">
+    <div className="w-full max-w-[1600px]">
+      <h1 className="text-[30px] font-semibold px-4">
+        {searchResults ? '검색 결과' : '인기 영화'} 
+      </h1>
+      <div className="flex flex-wrap justify-start sm:justify-between gap-4 md:gap-[33px] px-4">
+        {moviesToDisplay.map((movie) => ( // 영화정보를 props로 전달
+          <MovieCard
+            key={movie.id}
+            id={movie.id}
+            title={movie.title}
+            poster_path={movie.poster_path}
+            vote_average={movie.vote_average}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
   );
-}
+};
 
-export default App
+export default App;

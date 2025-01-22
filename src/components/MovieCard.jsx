@@ -12,10 +12,14 @@ const MovieCard = (props) => {
     navigate(`/movie/${id}`); // 각 리스트의 디테일id값으로 이동
   }
   return (
-    <div onClick={handleClick} className="w-[200px]">
-      <img src={`${IMG_BASE_URL}${poster_path}`} alt={title} className="h-[300px]" />
-      <h3 className="text-center">{title}</h3>
-      <p className="text-center">평점: {vote_average}</p>
+    <div onClick={handleClick} className="w-[160px] sm:w-[180px] md:w-[200px]">
+      <img 
+        src={`${IMG_BASE_URL}${poster_path}`} 
+        alt={title} 
+        className="w-full h-[240px] sm:h-[270px] md:h-[300px] object-cover"
+      />
+      <h3 className="text-center text-sm sm:text-base">{title}</h3>
+      <p className="text-center text-sm sm:text-base">평점: {vote_average}</p>
     </div>
   )
 }
